@@ -1,5 +1,6 @@
 name: junit-report-uploader
 version: 1.0.0
+icon: "junit.png"
 
 stats:
 - name: "junit"
