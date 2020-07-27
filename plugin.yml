@@ -1,0 +1,29 @@
+name: junit-report-uploader
+version: 1.0.0
+
+stats:
+- name: "junit"
+  desc: "junit"
+  fields:
+    - "success"
+    - "failures"
+    - "errors"
+    - "skipped"
+
+script: |
+  python3 -m pip install 'bs4==0.0.1'
+  cd ${FLOWCI_GIT_REPO}
+  plugindir=${FLOWCI_AGENT_PLUGIN_DIR}/junit-report-uploader
+  modules=$(python3 ${plugindir}/src/pom.py)
+
+  if [ $modules = "False" ]; then
+    echo "project no submodules"
+    mvn surefire-report:report-only -DoutputName=junit-report || true
+  fi
+
+  if [ $modules = "True" ]; then
+    echo "project has submodules"
+    mvn surefire-report:report-only -Daggregate=true -DoutputName=junit-report || true
+  fi
+
+  python3 ${plugindir}/src/junit.py
