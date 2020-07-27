@@ -13,6 +13,8 @@ stats:
 script: |
   python3 -m pip install 'bs4==0.0.1'
   cd ${FLOWCI_GIT_REPO}
+  
+  export MAVEN_OPTS="-Dmaven.repo.local=${FLOWCI_AGENT_WORKSPACE}/.m2"
   plugindir=${FLOWCI_AGENT_PLUGIN_DIR}/junit-report-uploader
   modules=$(python3 ${plugindir}/src/pom.py)
 
